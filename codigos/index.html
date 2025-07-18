@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cafetín C.P. "Cerro de Pasco"</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f2f2f2;
+      }
+    header {
+      background-color: #004d40;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      background-color: #00796b;
+      flex-wrap: wrap;
+    }
+    nav a {
+      color: white;
+      padding: 1rem;
+      text-decoration: none;
+    }
+    nav a:hover {
+      background-color: #004d40;
+    }
+    section {
+      padding: 2rem;
+      display: none;
+    }
+    .active {
+      display: block;
+    }
+    .menu {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .plato {
+      background-color: white;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    footer {
+      text-align: center;
+      background-color: #004d40;
+      color: white;
+      padding: 1rem;
+    }
+    #login-section input {
+      padding: 0.5rem;
+      margin: 0.2rem;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Cafetín C.P. "Cerro de Pasco"</h1>
+    <p>Servicio eficiente y moderno para nuestros trabajadores</p>
+  </header>
+
+  <nav>
+    <a href="#inicio" onclick="mostrarSeccion('inicio')">Inicio</a>
+    <a href="#menu" onclick="mostrarSeccion('menu')">Menú del Día</a>
+    <a href="#pedido" onclick="mostrarSeccion('pedido')">Realizar Pedido</a>
+    <a href="#login" onclick="mostrarSeccion('login-section')">Administración</a>
+    <a href="#contacto" onclick="mostrarSeccion('contacto')">Contacto</a>
+  </nav>
+
+  <section id="inicio" class="active">
+    <h2>Bienvenidos</h2>
+    <p>Esta plataforma permite a los trabajadores del cafetín visualizar el menú del día, hacer pedidos anticipados y mejorar la experiencia de atención con tecnología.</p>
+  </section>
+
+  <section id="menu">
+    <h2>Menú del Día</h2>
+    <div class="menu">
+      <div class="plato">
+        <h3>Desayuno Semanal</h3>
+        <p>Quinua, pan con palta y mate de coca</p>
+      </div>
+      <div class="plato">
+        <h3>Menú Economico</h3>
+        <p>Pollo a la norteña, Causa Rellena, Sopa + Refresco</p>
+      </div>
+      <div class="plato">
+        <h3>Menú Ejecutivo</h3>
+        <p>Entrada + Lomo Saltado, Puré con Asado de Pavita, Sopa de Casa + Gelatina + Refresco</p>
+      </div>
+      <div class="plato">
+        <h3>Extras</h3>
+        <p>Chicharrón con Mote, Pollo a la Milanesa, Trucha Frita</p>
+      </div>
+      <div class="plato">
+        <h3>Bebidas</h3>
+        <p>Mate, Coca, Gaseosa, Té</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="pedido">
+    <h2>Realizar Pedido</h2>
+    <form onsubmit="realizarPedido(event)">
+      <label>Nombre:<br><input type="text" id="nombrePedido" required></label><br><br>
+      <label>Seleccione su menú:<br>
+        <select id="opcionPedido" required>
+          <option value="">--Seleccione--</option>
+          <option value="desayuno">Desayuno Andino</option>
+          <option value="almuerzo">Almuerzo Criollo</option>
+          <option value="refresco">Bebidas</option>
+        </select>
+      </label><br><br>
+      <button type="submit">Enviar Pedido</button>
+    </form>
+    <p id="mensajePedido"></p>
+  </section>
+
+  <section id="login-section">
+    <h2>Acceso a Administración</h2>
+    <input type="text" id="usuario" placeholder="Usuario">
+    <input type="password" id="clave" placeholder="Contraseña">
+    <button onclick="verificarLogin()">Ingresar</button>
+    <p id="errorLogin"></p>
+  </section>
+
+  <section id="admin" class="hidden">
+    <h2>Inventario</h2>
+    <ul id="inventario">
+      <li>Quinua: <span id="inv-quinua">10</span> kg</li>
+      <li>Pollo: <span id="inv-pollo">8</span> kg</li>
+      <li>Refrescos: <span id="inv-refrescos">50</span> botellas</li>
+    </ul>
+    <h3>Pedidos Realizados</h3>
+    <ul id="listaPedidos"></ul>
+  </section>
+
+  <section id="contacto">
+    <h2>Contacto</h2>
+    <p>📍 Av. El Minero Mz. 1 Lt. 3, San Juan Pampa, Cerro de Pasco</p>
+    <p>📞 +51 945 852 978</p>
+    <p>📧 cafetincp@ejemplo.com</p>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Cafetín C.P. "Cerro de Pasco". Todos los derechos reservados.</p>
+  </footer>
+
+  <script>
+    function mostrarSeccion(id) {
+      document.querySelectorAll("section").forEach(sec => sec.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+    }
+
+    function realizarPedido(event) {
+      event.preventDefault();
+      const nombre = document.getElementById("nombrePedido").value;
+      const opcion = document.getElementById("opcionPedido").value;
+      const lista = document.getElementById("listaPedidos");
+      const mensaje = document.getElementById("mensajePedido");
+
+      const nombresMenu = {
+        desayuno: "Desayuno Andino",
+        almuerzo: "Almuerzo Criollo",
+        refresco: "Bebidas"
+      };
+
+      let li = document.createElement("li");
+      li.textContent = `${nombre} pidió: ${nombresMenu[opcion]}`;
+      lista.appendChild(li);
+
+      if (opcion === "refresco") {
+        let stock = document.getElementById("inv-refrescos");
+        let nuevoStock = parseInt(stock.textContent) - 1;
+        if (nuevoStock >= 0) {
+          stock.textContent = nuevoStock;
+        } else {
+          mensaje.textContent = "No hay stock de refrescos.";
+          return;
+        }
+      }
+
+      mensaje.textContent = "Pedido registrado con éxito.";
+      event.target.reset();
+    }
+
+    function verificarLogin() {
+      const user = document.getElementById("usuario").value;
+      const pass = document.getElementById("clave").value;
+      const error = document.getElementById("errorLogin");
+
+      if (user === "admin" && pass === "1234") {
+        document.getElementById("admin").classList.remove("hidden");
+        mostrarSeccion("admin");
+        error.textContent = "";
+      } else {
+        error.textContent = "Usuario o contraseña incorrectos.";
+      }
+    }
+  </script>
+</body>
+</html>
+<script>
+  window.onload = function(){
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("run") ==="1") {
+      ejecutarcodigo();
+    }
+  };
+  function ejecutarcodigo(){
+    alert("¡se ejecuto el codigo porque usaste?run=1!");
+  }
+</script>
